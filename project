@@ -1,5 +1,8 @@
+#include <chrono>
+#include <random>
 #include <iostream>
 #include <ctime>
+#include <bits/stdc++.h>
 #include <cstdlib>
 
 void program1()
@@ -311,26 +314,53 @@ void program7()
 	}
 }
 
-void program8()
+void program8() 
 {
-	srand(time(NULL));
-	const int n = 10;
-	int a[n];
-	for (int i = 0; i < n; i++)
-	{
-		a[i] = rand() % 10;
-	}
-	std::cout << "Starting array\n";
-	for (int i = 0; i < n; i++)
-	{
-		std::cout << a[i] << " ";
-	}
-	std::cout << "\n";
-	std::cout << "New array: \n";
-	for (int i = 0; i < n; i++)
-	{
-		std::cout << a[i] << " ";
-	}
+    srand(time(NULL));
+    const long int n = 100000;
+
+    int* arr1 = new int[n];
+    int* arr2 = new int[n];
+    int* arr3 = new int[n];
+    for (int i = 0; i < n; ++i) 
+    {
+        int tmp = rand() % 10 - 5;
+        arr1[i] = tmp;
+        arr2[i] = tmp;
+        arr3[i] = tmp;
+    }
+
+    auto a1 = std::chrono::high_resolution_clock::now();
+    std::sort(arr1, arr1 + n);
+    auto a2 = std::chrono::high_resolution_clock::now();
+
+    std::cout << "build-in sort time: " << std::chrono::duration<double, std::milli>(a2 - a1).count() << " ms\n";
+
+    auto b1 = std::chrono::high_resolution_clock::now();
+    for (int i = 0; i < n - 1; i++)
+        for (int j = 0; j < n - i - 1; j++)
+            if (arr2[j] > arr2[j + 1])
+                std::swap(arr2[j], arr2[j + 1]);
+
+    auto b2 = std::chrono::high_resolution_clock::now();
+
+    std::cout << "bubble sort time: " << std::chrono::duration<double, std::milli>(b2 - b1).count() << " ms\n";
+
+    auto c1 = std::chrono::high_resolution_clock::now();
+
+    int i, j, min_idx;
+    for (i = 0; i < n-1; i++)
+    {
+        min_idx = i;
+        for (j = i+1; j < n; j++)
+            if (arr3[j] < arr3[min_idx])
+                min_idx = j;
+
+        std::swap(arr3[min_idx], arr3[i]);
+    }
+    auto c2 = std::chrono::high_resolution_clock::now();
+
+    std::cout << "selection sort time: " << std::chrono::duration<double, std::milli>(c2 - c1).count() << " ms";
 }
 
 int main()
