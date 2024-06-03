@@ -4,6 +4,9 @@
 #include <ctime>
 #include <bits/stdc++.h>
 #include <cstdlib>
+#include <vector>
+#include <algorithm>
+
 
 void program1()
 {
@@ -489,6 +492,400 @@ void program11()
 		std::cout << "\nNo numbers found" << '\n';
 	}
 }
+void program12() {
+    std::vector<int> arr1(10), arr2(10);
+
+    std::cout << "\n1st mass: ";
+    for (int i = 0; i < 10; i++)
+    {
+        arr1[i] = rand() % 10;
+        std::cout << arr1[i] << "\t";
+    }
+
+    std::cout << "\n2nd mass: ";
+    for (int i = 0; i < arr2.size(); i++)
+    {
+        arr2[i] = rand() % 10;
+        std::cout << arr2[i] << "\t";
+    }
+
+    std::sort(arr1.begin(), arr1.end());
+    std::cout << "\n1st sorted:  ";
+    for (int i = 0; i < 10; i++)
+    {
+        std::cout << arr1[i] << "\t";
+    }
+
+    std::sort(arr2.rbegin(), arr2.rend());
+    std::cout << "\n2nd sorted:  ";
+    for (int i = 0; i < arr2.size(); i++)
+    {
+        std::cout << arr2[i] << "\t";
+    }
+
+    for (const auto& element : arr2)
+    {
+        arr1.push_back(element);
+    }
+
+    std::cout << "\nres:    ";
+
+    std::sort(arr1.rbegin(), arr1.rend());
+    std::cout << "\n" << arr1[0] << "\t";
+    for (int i = 1; i < arr1.size(); i++) { 
+        if (arr1[i] != arr1[i - 1])
+            std::cout << arr1[i] << "\t";
+    }
+}
+void program13() {
+    int d, m;
+    std::cout << "Write the date (Day, then month) (in numbers)";
+    std::cin >> d >> m;
+
+    if (m < 1 || m > 12) {
+        std::cout << "\nInput error";
+        return;
+    }
+
+    std::vector<int> month{ 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+    if (d > month[m - 1])
+    {
+        std::cout << "\nInput error";
+        return;
+    }
+    int rez = 0;
+    for (int i = 0; i < m - 1; i++)
+    {
+        rez += month[i];
+    }
+    rez = (rez + d) % 7;
+    switch (rez) {
+    case 0:
+        std::cout << "Sunday";
+        break;
+    case 1:
+        std::cout << "Monday";
+        break;
+    case 2:
+        std::cout << "Tuesday";
+        break;
+    case 3:
+        std::cout << "Wednesday";
+        break;
+    case 4:
+        std::cout << "Thursday";
+        break;
+    case 5:
+        std::cout << "Friday";
+        break;
+    case 6:
+        std::cout << "Saturday";
+        break;
+    }
+}
+void program14() {
+    std::vector<int> arr(1000);
+    std::vector<int> maxind;
+    std::vector<int> maxval;
+    int count = 0, maxcount = 0;
+
+    std::cout << "\nMass: ";
+    for (int i = 0; i < arr.size(); i++)
+    {
+        arr[i] = 1 + rand() % 6;
+        std::cout << arr[i] << "\t";
+
+        if (i > 0 && arr[i] == arr[i - 1])
+        {
+            count++;
+            if (count > maxcount)
+            {
+                maxcount = count;
+                maxind.clear();
+                maxval.clear();
+                maxind.push_back(i - count);
+                maxval.push_back(arr[i]);
+            }
+            else if (count == maxcount)
+            {
+                maxind.push_back(i - count);
+                maxval.push_back(arr[i]);
+            }
+        }
+        else
+        {
+            count = 0;
+        }
+    }
+
+    std::cout << "\nMax count: " << maxcount + 1 << "\n";
+    for (int i = 0; i < maxind.size(); i++)
+    {
+        std::cout << "Index: " << maxind[i] << "\tValue: " << maxval[i] << "\t";
+    }
+}
+void program15() {
+    size_t n;
+    std::cout << "\nEnter number of rows and columns: ";
+    std::cin >> n;
+    std::vector<std::vector<int>> matrix(n, std::vector<int>(n));
+
+    for (size_t i = 0; i != n; ++i) {
+        for (size_t j = 0; j != n; ++j) {
+            if (i == j) {
+                matrix[i][j] = i + 1;
+            }
+            if (n - 1 - i == j)
+            {
+                matrix[i][j] = j + 1;
+            }
+        }
+
+    }
+
+    std::cout << "\n";
+    for (size_t i = 0; i != n; ++i) {
+        for (size_t j = 0; j != n; ++j) {
+            std::cout << matrix[i][j] << "\t";
+        }
+        std::cout << "\n";
+    }
+}
+void program16() {
+    std::vector<int> str(9);
+    bool isMagicSquare = false;
+    int attemptCount = 0;
+
+    do {
+        str.clear();
+        isMagicSquare = true;
+
+        for (int i = 0; i < 9; i++) {
+            while (true) {
+                int randomNum = 1 + rand() % 9;
+                auto result = std::find(str.begin(), str.end(), randomNum);
+                if (result == str.end()) {
+                    str.push_back(randomNum);
+                    break;
+                }
+            }
+        }
+
+        std::cout << "\nhelp" << attemptCount++ << " = ";
+        for (const auto& num : str) {
+            std::cout << num << " ";
+        }
+        std::cout << "\n";
+
+        std::vector<std::vector<int>> matrix(3, std::vector<int>(3));
+        for (size_t i = 0; i < 3; ++i) {
+            for (size_t j = 0; j < 3; ++j) {
+                matrix[i][j] = str[i * 3 + j];
+            }
+        }
+
+        int sum0 = 0, sum;
+        for (int j = 0; j < 3; j++) sum0 += matrix[0][j];
+
+        for (int i = 1; i < 3; i++) {
+            sum = 0;
+            for (int j = 0; j < 3; j++) {
+                sum += matrix[i][j];
+            }
+            if (sum0 != sum) {
+                isMagicSquare = false;
+                break;
+            }
+        }
+
+        if (isMagicSquare) {
+            for (int j = 0; j < 3; j++) {
+                sum = 0;
+                for (int i = 0; i < 3; i++) {
+                    sum += matrix[i][j];
+                }
+                if (sum0 != sum) {
+                    isMagicSquare = false;
+                    break;
+                }
+            }
+        }
+
+        if (isMagicSquare) {
+            sum = 0;
+            for (int i = 0; i < 3; i++) sum += matrix[i][i];
+            if (sum0 != sum) {
+                isMagicSquare = false;
+            }
+        }
+
+        if (isMagicSquare) {
+            sum = 0;
+            for (int i = 0; i < 3; i++) sum += matrix[i][2 - i];
+            if (sum0 != sum) {
+                isMagicSquare = false;
+            }
+        }
+
+        if (isMagicSquare) {
+            std::cout << "Magic square found:\n";
+            for (size_t i = 0; i < 3; ++i) {
+                for (size_t j = 0; j < 3; ++j) {
+                    std::cout << matrix[i][j] << "\t";
+                }
+                std::cout << "\n";
+            }
+        }
+    } while (!isMagicSquare);
+}
+
+void program17() {
+    const int n = 5;
+    int arr[n][n] = {
+        {1, 4, 1, 1, 1},
+        {4, 5, 1, 3, 1},
+        {1, 1, 7, 1, 1},
+        {1, 3, 1, 6, 4},
+        {1, 1, 1, 4, 1},
+    };
+
+    bool isSymmetricMainDiagonal = true, isSymmetricSideDiagonal = true;
+
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            if (arr[i][j] != arr[j][i]) {
+                isSymmetricMainDiagonal = false;
+                break;
+            }
+        }
+        if (!isSymmetricMainDiagonal) break;
+    }
+
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            if (arr[i][j] != arr[n - 1 - i][n - 1 - j]) {
+                isSymmetricSideDiagonal = false;
+                break;
+            }
+        }
+        if (!isSymmetricSideDiagonal) break;
+    }
+
+    std::cout << "Matrix:\n";
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            std::cout << arr[i][j] << "  ";
+        }
+        std::cout << "\n";
+    }
+
+    if (isSymmetricMainDiagonal && isSymmetricSideDiagonal) {
+        std::cout << "Matrix is symmetrical to both of its diagonals\n";
+    }
+    else if (isSymmetricMainDiagonal) {
+        std::cout << "Matrix is symmetrical to main diagonal only\n";
+    }
+    else if (isSymmetricSideDiagonal) {
+        std::cout << "Matrix is symmetrical to side diagonal only\n";
+    }
+    else {
+        std::cout << "Matrix is not symmetrical to any of the diagonals\n";
+    }
+
+    getchar();
+}
+
+void program18() {
+    const int n = 3;
+    const int m = 5;
+    int matrix[n][m];
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            matrix[i][j] = rand() % 10;
+        }
+    }
+
+    std::cout << "Matrix\n";
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            std::cout << matrix[i][j] << " ";
+        }
+        std::cout << "\n";
+    }
+
+    for (int i = 0; i < n; i++) {
+        std::sort(matrix[i], matrix[i] + m);
+    }
+
+    std::cout << "Sorted by rows\n";
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            std::cout << matrix[i][j] << " ";
+        }
+        std::cout << "\n";
+    }
+
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            for (int k = j + 1; k < n; k++) {
+                if (matrix[j][i] > matrix[k][i]) {
+                    std::swap(matrix[j][i], matrix[k][i]);
+                }
+            }
+        }
+    }
+
+    std::cout << "Sorted by columns\n";
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            std::cout << matrix[i][j] << " ";
+        }
+        std::cout << "\n";
+    }
+}
+
+void program19() {
+    const int n = 3, m = 6;
+    int arr[n][m];
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            arr[i][j] = rand() % 10;
+            std::cout << arr[i][j] << " ";
+        }
+        std::cout << "\n";
+    }
+
+    bool foundSaddlePoint = false;
+
+    for (int i = 0; i < n; i++) {
+        int max = arr[i][0];
+        int maxCol = 0;
+        for (int j = 1; j < m; j++) {
+            if (arr[i][j] >= max) {
+                max = arr[i][j];
+                maxCol = j;
+            }
+        }
+
+        bool isSaddlePoint = true;
+        for (int k = 0; k < n; k++) {
+            if (arr[k][maxCol] < max) {
+                isSaddlePoint = false;
+                break;
+            }
+        }
+
+        if (isSaddlePoint) {
+            std::cout << "Saddle point found at row " << i + 1 << ", column " << maxCol + 1 << "\n";
+            foundSaddlePoint = true;
+        }
+    }
+
+    if (!foundSaddlePoint)
+        std::cout << "There is no saddle point\n";
+}
 
 int main()
 {
@@ -505,6 +902,14 @@ int main()
 	//   program9();
 	//   program10();
         //   program11();
+        //   program12();
+        //   program13();
+        //   program14();
+        //   program15();
+        //   program16();
+        //   program17();
+        //   program18();
+        //   program19();
 
     std::cout << "\nOne more? (1 - yes, 0 - no): ";
     std::cin >> answer;
